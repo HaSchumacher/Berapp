@@ -1,14 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { PumpsystemsRoutingModule } from './pumpsystems-routing.module';
-
+import { PumpsystemsRoutingModule } from '@features/pumpsystems/routes';
+import { PumpsystemsOverviewComponent } from '@features/pumpsystems/pages';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    PumpsystemsRoutingModule
-  ]
+  declarations: [PumpsystemsOverviewComponent],
+  imports: [CommonModule, PumpsystemsRoutingModule],
 })
-export class PumpsystemsModule { }
+export class PumpsystemsModule {}
