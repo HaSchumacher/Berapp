@@ -1,2 +1,5 @@
-<p>pumpsystems-overview works!</p>
-<p>{{ store.pumpSystems$ | async | json }}</p>
+<app-pumpsystem-card
+  [pumpsystem]="pumpsystem"
+  *ngFor="let pumpsystem of store.pumpSystems$ | async"
+>
+</app-pumpsystem-card>
