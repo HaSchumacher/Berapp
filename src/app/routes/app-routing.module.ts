@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuardService } from '@core/guards';
 import { PUMPSYSTEMS } from './routes';
 
 const routes: Routes = [
@@ -9,6 +10,7 @@ const routes: Routes = [
       import('@features/pumpsystems/pumpsystems.module').then(
         (module) => module.PumpsystemsModule
       ),
+    canLoad: [AuthGuardService],
   },
   {
     path: '**',

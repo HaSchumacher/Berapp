@@ -26,7 +26,10 @@ export class AuthService implements CanAuthenticate {
     return this.firebaseAuth.signInWithEmailAndPassword(email, password);
   }
 
-  public async signup(email: string, password: string): Promise<any> {
+  public async signup(
+    email: string,
+    password: string
+  ): Promise<UserCredential> {
     return this.firebaseAuth.createUserWithEmailAndPassword(email, password);
   }
 
