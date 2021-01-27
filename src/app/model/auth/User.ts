@@ -5,6 +5,7 @@ export interface User extends FireBaseUser {
 }
 
 export interface UserData {
+  superadmin: boolean;
   name: string;
   permissions: Permissions;
 }
