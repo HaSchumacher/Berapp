@@ -3,7 +3,7 @@ import { LOGGER, Logger, Pumpsystem, User } from '@model';
 import { PumpsystemService, UserService } from '@core/services/data';
 import { AuthService } from '@core/services/auth';
 import { Observable, of } from 'rxjs';
-import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { isNonNull } from '@utilities';
 @Injectable({
   providedIn: 'root',
@@ -29,12 +29,12 @@ export class StoreService {
       shareReplay(1)
     );
     this._pumpsystems$ = this.user$.pipe(
-      filter(isNonNull),
-      switchMap((user) => this.pumpsystem.getPumpSystems(user)),
+      switchMap((user) =>
+        isNonNull(user) ? this.pumpsystem.getPumpSystems(user) : of(null)
+      ),
+      tap((pumpsystems) => this.logger?.trace('Pumpsystems', pumpsystems)),
       shareReplay(1)
     );
-
-    this.pumpSystems$.subscribe(console.log);
   }
 
   public get appName(): string {
