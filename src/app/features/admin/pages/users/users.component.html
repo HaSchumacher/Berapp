@@ -1,1 +1,4 @@
-<app-user-table [data]="userData$ | async"></app-user-table>
+<app-user-table
+  (selectionChange)="update($event)"
+  [data]="userData$ | async"
+></app-user-table>

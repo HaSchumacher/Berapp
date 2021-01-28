@@ -21,4 +21,8 @@ export class UsersComponent implements OnInit {
   get userData$(): Observable<UserData[]> {
     return this._userData$;
   }
+
+  public update(user: UserData): Observable<void> {
+    return this.userService.updateUserData(user);
+  }
 }

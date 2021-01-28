@@ -3,7 +3,7 @@
     <mat-form-field *ngFor="let permission of user.permissions | keyvalue">
       <mat-label>{{ permission.key }}</mat-label>
       <mat-select
-        (valueChange)="selectedRole.emit($event)"
+        (valueChange)="onSelectionChange(permission.key, $event)"
         [value]="permission.value"
       >
         <mat-option [value]="role" *ngFor="let role of roles">

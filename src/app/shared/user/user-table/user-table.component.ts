@@ -5,7 +5,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { UserData } from '@model/auth';
 
 @Component({
@@ -23,15 +23,14 @@ import { UserData } from '@model/auth';
     ]),
   ],
 })
-export class UserTableComponent implements OnInit {
+export class UserTableComponent {
   @Input()
   public data: UserData[];
   public _expandedUser: UserData;
 
   @Input()
-  public columns: string[] = ['name', 'id', 'superadmin'];
+  public columns: string[] = ['name', 'email', 'id'];
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  @Output()
+  public readonly selectionChange: EventEmitter<any> = new EventEmitter<any>();
 }
