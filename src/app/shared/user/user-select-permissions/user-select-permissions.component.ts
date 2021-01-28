@@ -3,11 +3,11 @@ import { UserData } from '@model/auth';
 import { USER_SELECT_ROLES_DATA } from './token';
 
 @Component({
-  selector: 'app-user-select-role',
-  templateUrl: './user-select-role.component.html',
-  styleUrls: ['./user-select-role.component.scss'],
+  selector: 'app-user-select-permissions',
+  templateUrl: './user-select-permissions.component.html',
+  styleUrls: ['./user-select-permissions.component.scss'],
 })
-export class UserSelectRoleComponent {
+export class UserSelectPermissionsComponent {
   @Input()
   public user: UserData;
 

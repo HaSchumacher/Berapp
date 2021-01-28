@@ -1,5 +1,6 @@
-<ng-container *ngIf="user">
-  <ng-container *ngIf="user?.permissions">
+<section class="user-permissions-container" *ngIf="user">
+  <h3>Permissions</h3>
+  <section class="user-permissions" *ngIf="user?.permissions">
     <mat-form-field *ngFor="let permission of user.permissions | keyvalue">
       <mat-label>{{ permission.key }}</mat-label>
       <mat-select
@@ -11,5 +12,5 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </ng-container>
-</ng-container>
+  </section>
+</section>

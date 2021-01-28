@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from '@shared/core';
-import { UserSelectRoleComponent } from './user-select-role';
 import { UserTableComponent } from './user-table';
+import { UserSelectPermissionsComponent } from './user-select-permissions';
 
 @NgModule({
-  declarations: [UserSelectRoleComponent, UserTableComponent],
+  declarations: [UserTableComponent, UserSelectPermissionsComponent],
   imports: [CoreModule],
   exports: [UserTableComponent],
 })
