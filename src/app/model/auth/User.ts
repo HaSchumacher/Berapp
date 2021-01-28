@@ -10,10 +10,4 @@ export interface UserData {
   permissions: Permissions;
 }
 
-export type Permissions = Record<string, Role>;
-
-export enum Role {
-  ADMIN = 'admin',
-  WRITER = 'writer',
-  READER = 'reader',
-}
+export type Permissions = Record<string, string>;

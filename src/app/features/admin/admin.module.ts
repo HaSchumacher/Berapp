@@ -7,9 +7,10 @@ import {
   UsersComponent,
 } from '@features/admin/pages';
 import { CoreModule } from '@shared/core';
+import { UserModule } from '@shared/user';
 
 @NgModule({
   declarations: [OverviewComponent, UsersComponent, PumpsystemsComponent],
-  imports: [CoreModule, AdminRoutingModule],
+  imports: [CoreModule, UserModule, AdminRoutingModule],
 })
 export class AdminModule {}
