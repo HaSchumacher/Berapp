@@ -3,17 +3,27 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { UserData } from '@model/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '@firebase/auth-types';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private readonly USERS_COLLECTION: string = 'users';
+  private readonly ROLES_COLLECTION: string = 'roles';
   private readonly ID_MAPPER: string;
+  public readonly roles: Observable<string[]>;
 
   constructor(private readonly firestore: AngularFirestore) {
     let helper: Pick<UserData, 'id'> = { id: null };
     this.ID_MAPPER = Object.keys(helper)[0];
+    this.roles = this.firestore
+      .collection(this.ROLES_COLLECTION)
+      .valueChanges({ idField: 'role' })
+      .pipe(
+        map((roles) => roles.map((wrapper) => wrapper.role)),
+        shareReplay(1)
+      );
   }
 
   public getData(of: User): Observable<UserData> {
