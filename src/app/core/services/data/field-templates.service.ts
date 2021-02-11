@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
-import { forkJoin, Observable } from 'rxjs';
-import { mergeMap, share } from 'rxjs/operators';
-import { UserService } from './user.service';
+import { Observable, forkJoin } from 'rxjs';
+import { share, mergeMap } from 'rxjs/operators';
+import { UserService } from '.';
+
 
 @Injectable({
   providedIn: 'root',
@@ -37,8 +38,8 @@ export class FieldTemplatesService {
     }, []);
   }
 
-  //  Paginate when more then 10 values in fields !!!
-  public getFields(of: User): Observable<FieldTemplate[]> {
+   public getFields(of: User): Observable<FieldTemplate[]> {
+
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
     if (of.data.fields.length > 10) {
