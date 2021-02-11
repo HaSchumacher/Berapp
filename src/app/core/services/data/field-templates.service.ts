@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model/auth';
 import { FieldTemplate } from '@model/fieldTemplate';
+import { Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { UserService } from './user.service';
 @Injectable({
@@ -29,7 +30,7 @@ export class FieldTemplatesService {
   public addTemplate(template: FieldTemplate, of: User) {
     if (
       template == null ||
-      template.field_region == null ||
+      template.fieldRegion ==null ||
       template.id == null ||
       template.name == null ||
       of.data == null ||
