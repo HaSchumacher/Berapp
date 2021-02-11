@@ -1,28 +1,9 @@
-<ng-container *ngIf="this.store.user$ | async as user" class="profilepage">
-  <mat-card
-    ><h1>
-      Willkommen auf deiner Profilseite:
-      <span class="otherFontSizeandbold">{{ user.data.name }}</span>
-    </h1>
-    <div>
-      Von hier aus können Sie Ihre Email Adresse, Ihren Anzeigenamen und ihre
-      eingestellten Beregnungspläne Ihrer Felder aktualisieren.
-    </div>
-    <div>
-      current Email:
-      <span class="otherFontSizeandbold">{{ user.data.email }}</span>
-    </div>
-    <form [formGroup]="profileForm">
-      <label for="name">
-        Aktualisierung Ihres Namens:
-        <input type="text" formControlname="profileName" />
-      </label>
-      <label for="email">
-        Aktialisierung Ihrer Email:
-        <input type="email" formControlname="profileEmail" />
-      </label>
-    </form>
-  </mat-card>
+<ng-container *ngIf="this.store.user$ |async as user" class="profilepage">
+  <mat-card><h1>Willkommen auf deiner Profilseite: <span class="otherFontSizeandbold">{{user.data.name}}</span></h1>
+  <div> Von hier aus können Sie Ihre Email Adresse, Ihren Anzeigenamen und ihre eingestellten Beregnungspläne Ihrer Felder aktualisieren.</div>
+  <div>current Email: <span class="otherFontSizeandbold">{{user.data.email}}</span></div>
+  </mat-card>      
+
   <mat-card>
     <mat-form-field>
       <mat-label>Filter</mat-label>
@@ -81,3 +62,15 @@
     </form>
   </mat-card>
 </ng-container>
+
+<ng-container *ngIf="this.store.user$ |async as user ">
+   <h1>Welcome to your Profile page: {{user.data.name}}</h1>
+
+  <div> Here you can change your name, email and fieldtemplates </div>
+  <div>current Email: {{user.data.email}}</div>
+  
+  <!-- Suchfeld -->
+  <div> current FieltTemplates: <span *ngFor="let field of fields |async"> {{field.name}} : {{field.irrigationDuration}}</span></div>
+  
+  
+  </ng-container>

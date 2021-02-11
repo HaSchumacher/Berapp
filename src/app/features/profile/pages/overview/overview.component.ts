@@ -8,15 +8,18 @@ import { FieldTemplatesService } from '@core/services/data/field-templates.servi
 import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
 import { isNonNull } from '@utilities';
+import { Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
+
 export class OverviewComponent implements OnInit{
+
+  public fields: Observable<FieldTemplate[]>;
   public displayedColumns: String[] = ['name','irrigationDuration'];
   public dataSource: MatTableDataSource<FieldTemplate>
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -50,6 +53,7 @@ export class OverviewComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
+
   public addField(of:User){
     if(this.fieldTemplate.valid){
       const _currentField: FieldTemplate = {
