@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
-import { Observable, forkJoin } from 'rxjs';
-import { share, mergeMap } from 'rxjs/operators';
-import { UserService } from '.';
+import { forkJoin, Observable } from 'rxjs';
+import { mergeMap, share } from 'rxjs/operators';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',

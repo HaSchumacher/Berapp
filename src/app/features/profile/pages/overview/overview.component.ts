@@ -1,15 +1,15 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { StoreService } from '@core';
 import { FieldTemplatesService } from '@core/services/data/field-templates.service';
-import { User } from '@model/auth';
+import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
 import { isNonNull } from '@utilities';
-import { Observable } from 'rxjs';
-import { delay, filter, map, switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-overview',
@@ -32,7 +32,7 @@ export class OverviewComponent implements OnInit{
   })
   
 
-  constructor(public readonly store:StoreService, public readonly fieldTemplateService: FieldTemplatesService) { 
+  constructor(public readonly store: StoreService, public readonly fieldTemplateService: FieldTemplatesService) { 
     this.dataSource = new MatTableDataSource<FieldTemplate>();
   }
    ngOnInit(): void {
