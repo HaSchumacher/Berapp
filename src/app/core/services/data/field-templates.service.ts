@@ -14,6 +14,10 @@ export class FieldTemplatesService {
   
   constructor(private readonly firestore: AngularFirestore, private readonly userService: UserService) {
   }
+
+
+
+
   //Return Observable for ten or less fields
   private fieldsHelper (of: User, arr: String[]) :Observable<FieldTemplate[]> {
     return this.firestore.collection<FieldTemplate>(
