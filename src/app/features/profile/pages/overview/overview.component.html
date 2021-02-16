@@ -82,6 +82,7 @@
   </mat-card>
 </ng-container>
 
+<<<<<<< HEAD
 <ng-container *ngIf="this.store.user$ |async as user" class="profilepage">
   <mat-card><h1>Willkommen auf deiner Profilseite: <span class="otherFontSizeandbold">{{user.data.name}}</span></h1>
   <div> Von hier aus können Sie Ihre Email Adresse, Ihren Anzeigenamen und ihre eingestellten Beregnungspläne Ihrer Felder aktualisieren.</div>
@@ -117,4 +118,11 @@
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
    </div>
   </mat-card>
+=======
+  <div> Here you can change your name, email and fieldtemplates </div>
+  <div>current Email: {{user.data.email}}</div>
+  
+  <!-- Suchfeld -->
+  <div> current FieltTemplates: <span *ngFor="let field of fields |async"> {{field.name}} : {{field.irrigationDuration}}</span></div>
+>>>>>>> try adding pagewise loading fields from user array more then 10elements
 </ng-container>

@@ -9,8 +9,7 @@ import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
 import { isNonNull } from '@utilities';
 import { Observable } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
-
+import { delay, filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-overview',
