@@ -16,7 +16,6 @@ import { filter, switchMap } from 'rxjs/operators';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-
 export class OverviewComponent implements OnInit{
 
   public fields: Observable<FieldTemplate[]>;
@@ -53,7 +52,6 @@ export class OverviewComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
-
   public addField(of:User){
     if(this.fieldTemplate.valid){
       const _currentField: FieldTemplate = {

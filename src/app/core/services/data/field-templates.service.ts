@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
-import { forkJoin, Observable } from 'rxjs';
-import { mergeMap, share } from 'rxjs/operators';
+import { isNonNull } from '@utilities';
+import { concat, EMPTY, forkJoin, from, merge, Observable } from 'rxjs';
+import { concatAll, filter, map, mergeAll, mergeMap, share, take, tap } from 'rxjs/operators';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -14,42 +15,41 @@ export class FieldTemplatesService {
   
   constructor(private readonly firestore: AngularFirestore, private readonly userService: UserService) {
   }
+  
   //Return Observable for ten or less fields
-  private fieldsHelper(arr: String[]): Observable<FieldTemplate[]> {
-    return this.firestore
-      .collection<FieldTemplate>(this.FIELDTEMPLATES, (ref) =>
-        ref.where('__name__', 'in', arr)
-      )
-      .valueChanges()
-      .pipe(share());
+  private fieldsHelper (of: User, arr: String[]) :Observable<FieldTemplate[]> {
+    return this.firestore.collection<FieldTemplate>(
+      this.FIELDTEMPLATES, (ref) => ref.where('__name__', 'in', arr))
+      .valueChanges().pipe(share())
   }
 
-  private splitArrayBySize(arr, size) {
+  private splitArrayBySize (arr, size) {
     return arr.reduce((acc, val, i) => {
-      let idx = Math.floor(i / size);
-      let page = acc[idx] || (acc[idx] = []);
-      page.push(val);
-
-      return acc;
-    }, []);
+      let idx = Math.floor(i / size)
+      let page = acc[idx] || (acc[idx] = [])
+      page.push(val)
+  
+      return acc
+    }, [])
   }
-
+  
   //  Paginate when more then 10 values in fields !!!
    public getFields(of: User): Observable<FieldTemplate[]> {
     if (of == null || of.data == null || of.data.permissions == null)
       throw new Error(`No permissions in ${of}`);
-    if (of.data.fields.length > 10) {
-      // building pagination for Fields
-      const fieldarray = of.data.fields;
-      const pages: string[][] = this.splitArrayBySize(fieldarray, 10);
-      return forkJoin(pages.map((page) => this.fieldsHelper(page))).pipe(
-        mergeMap((fields) => fields)
-      );
-      // map((fields) => flatten Array in Observer to match expection fields.reduce((sum,curr) => [...sum,...curr],[])
-    } else {
-      return this.fieldsHelper(of.data.fields);
-    }
-  }
+      if(of.data.fields.length > 10){
+        // building pagination for Fields
+        const fieldarray = of.data.fields
+        const pages:string[][] = this.splitArrayBySize(fieldarray, 10);
+        return forkJoin(
+          pages.map((page) => this.fieldsHelper(of,page))
+          ).pipe(mergeMap(fields => fields))
+            // map((fields) => flatten Array in Observer to match expection fields.reduce((sum,curr) => [...sum,...curr],[])
+        
+      } else {
+        return this.fieldsHelper(of, of.data.fields);
+      }
+   }
 
    
 
