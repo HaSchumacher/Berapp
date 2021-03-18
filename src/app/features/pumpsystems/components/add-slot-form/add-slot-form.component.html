@@ -29,7 +29,13 @@
     <mat-label></mat-label>
     <input [formControlName]="controlName_toTime" matInput type="time" />
   </mat-form-field>
-  <button id="submitButton" mat-raised-button color="accent" type="submit">
+  <button
+    [disabled]="disabled"
+    id="submitButton"
+    mat-raised-button
+    color="accent"
+    type="submit"
+  >
     Add Slot
   </button>
 </form>

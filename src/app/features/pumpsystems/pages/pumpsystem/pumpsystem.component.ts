@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PumpsystemService, StoreService, UserService } from '@core/services';
-import { SlotDataDialogService } from '@features/pumpsystems/components';
+import {
+  AddSlotFormComponent,
+  SlotDataDialogService,
+} from '@features/pumpsystems/components';
 import { TimeLineData } from '@features/pumpsystems/components/slots-timeline';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
 import { Pumpsystem, SlotData, SlotDataItem } from '@model/pumpsystem';
 import { add, getStartOfToday, isNonNull } from '@utilities';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
+  debounceTime,
   filter,
+  finalize,
   map,
   mapTo,
   pluck,
@@ -45,6 +50,8 @@ export class PumpsystemComponent implements OnInit {
     [this.controlName_from]: new FormControl(this.initialFromValue),
     [this.controlName_to]: new FormControl(this.initialToValue),
   });
+
+  private _addingSlot: boolean = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -141,12 +148,18 @@ export class PumpsystemComponent implements OnInit {
   public addSlot(data: SlotData, pumpsystem: Pumpsystem): void {
     this.store.user$
       .pipe(
+        tap(() => (this._addingSlot = true)),
         take(1),
         switchMap((user) =>
           this.pumpsystemService.addSlot({ ...data, by: user.uid }, pumpsystem)
-        )
+        ),
+        finalize(() => (this._addingSlot = false))
       )
       .subscribe();
+  }
+
+  public get addingSlot(): boolean {
+    return this._addingSlot;
   }
 
   public get pumpsystem$(): Observable<Pumpsystem> {

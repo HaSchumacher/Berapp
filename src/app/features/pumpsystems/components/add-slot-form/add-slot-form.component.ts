@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SlotData } from '@model';
 
@@ -21,6 +21,9 @@ export class AddSlotFormComponent {
     [this.controlName_toDate]: new FormControl(new Date(), Validators.required),
     [this.controlName_toTime]: new FormControl(null, Validators.required),
   });
+
+  @Input()
+  public disabled: boolean = false;
 
   @Output()
   public readonly submittedData: EventEmitter<
