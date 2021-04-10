@@ -11,6 +11,7 @@ import {
   SlotDataDialogComponent,
 } from '@features/pumpsystems/components';
 import { CoreModule } from '@shared/core';
+import { ErrorModule } from '@shared/error';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,6 @@ import { CoreModule } from '@shared/core';
     AddSlotFormComponent,
     SlotDataDialogComponent,
   ],
-  imports: [CoreModule, PumpsystemsRoutingModule],
+  imports: [CoreModule, ErrorModule, PumpsystemsRoutingModule],
 })
 export class PumpsystemsModule {}

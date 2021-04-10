@@ -9,6 +9,7 @@ import {
 import { TimeLineData } from '@features/pumpsystems/components/slots-timeline';
 import { PUMPSYSTEM_QUERY_PARAM_ID } from '@features/pumpsystems/routes/routes';
 import { Pumpsystem, SlotData, SlotDataItem } from '@model/pumpsystem';
+import { ErrorService } from '@shared/error/error.service';
 import { add, getStartOfToday, isNonNull } from '@utilities';
 import { combineLatest, Observable, of } from 'rxjs';
 import {
@@ -58,7 +59,8 @@ export class PumpsystemComponent implements OnInit {
     public readonly store: StoreService,
     private readonly pumpsystemService: PumpsystemService,
     private readonly userService: UserService,
-    public readonly slotDataDialog: SlotDataDialogService
+    public readonly slotDataDialog: SlotDataDialogService,
+    private readonly errorService: ErrorService
   ) {}
 
   public ngOnInit() {
@@ -155,7 +157,9 @@ export class PumpsystemComponent implements OnInit {
         ),
         finalize(() => (this._addingSlot = false))
       )
-      .subscribe();
+      .subscribe({
+        error: (error) => this.errorService.showErrorDialog(error),
+      });
   }
 
   public get addingSlot(): boolean {
