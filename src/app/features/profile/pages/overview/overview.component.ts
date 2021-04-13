@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTab, MatTabsModule } from '@angular/material/tabs';
+import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '@core';
 import { FieldTemplatesService } from '@core/services/data/field-templates.service';
 import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
 import { isNonNull } from '@utilities';
 import { Observable } from 'rxjs';
-import { delay, filter, map, switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-overview',
@@ -21,8 +22,9 @@ export class OverviewComponent implements OnInit{
   public fields: Observable<FieldTemplate[]>;
   public displayedColumns: String[] = ['name','irrigationDuration'];
   public dataSource: MatTableDataSource<FieldTemplate>
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatTab) tab: MatTabsModule;
   @ViewChild(MatSort) sort: MatSort;
+  
 
   profileForm = new FormGroup({
     profileName: new FormControl(''),
@@ -33,24 +35,22 @@ export class OverviewComponent implements OnInit{
     fieldDuration: new FormControl(''),
   })
   
+  constructor(public readonly store:StoreService, public readonly fieldTemplateService: FieldTemplatesService, public route:ActivatedRoute) { 
 
-  constructor(public readonly store: StoreService, public readonly fieldTemplateService: FieldTemplatesService) { 
-    this.dataSource = new MatTableDataSource<FieldTemplate>();
   }
+    
    ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
-    this.store.user$.pipe(filter(user => isNonNull(user)),switchMap((user)=> this.fieldTemplateService.getFields(user)))
-    .subscribe((fieldTemplates: FieldTemplate[])=> this.dataSource = new MatTableDataSource<FieldTemplate>(fieldTemplates))
+    this.store.user$.pipe(
+      filter(user => isNonNull(user)),
+      switchMap((user)=> this.fieldTemplateService.getFields(user))
+      ).subscribe((fieldTemplates: FieldTemplate[])=> this.dataSource = new MatTableDataSource<FieldTemplate>(fieldTemplates))
+      
   }
-
-  applyFilter(event: Event) {
+  applyFilter() {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
   public addField(of:User){
     if(this.fieldTemplate.valid){
@@ -62,5 +62,11 @@ export class OverviewComponent implements OnInit{
       this.fieldTemplateService.addTemplate(_currentField,of);
     }
   }
+  public updateUserData(){
+    console.log(" TODO updateUser");
+    console.log(this.profileForm.value.profileName);
+    console.log(this.profileForm.value.profileEmail);
+  }
+
 
 }

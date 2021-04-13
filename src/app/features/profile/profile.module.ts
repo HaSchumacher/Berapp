@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { SharedModule } from '@shared';
 import { ProfileRoutingModule } from './routes/profile-routing.module';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 
 @NgModule({
   declarations: [OverviewComponent],
   imports: [
-    SharedModule,ProfileRoutingModule
+    SharedModule,ProfileRoutingModule, MatTabsModule
   ]
 })
 export class ProfileModule { }

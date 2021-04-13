@@ -1,40 +1,38 @@
 <ng-container *ngIf="this.store.user$ | async as user" class="profilepage">
-  <mat-card
-    ><h1>
-      Willkommen auf deiner Profilseite:
-      <span class="otherFontSizeandbold">{{ user.data.name }}</span>
-    </h1>
+   <mat-card>
+    <h1 style="line-height: 1.5rem">Willkommen auf Ihrer Profilseite:</h1>
     <div>
-      Von hier aus können Sie Ihre Email Adresse, Ihren Anzeigenamen und ihre
-      eingestellten Beregnungspläne Ihrer Felder aktualisieren.
+      <h2>
+        <small>
+          Hier können Sie Ihre Email Adresse, Anzeigenamen und<br />
+          ihre Beregnungspläne für Felder verwalten.<br />
+          Nutzen Sie hierfür die entsprechenden Tabs.
+        </small>
+      </h2>
     </div>
-    <div>
-      current Email:
-      <span class="otherFontSizeandbold">{{ user.data.email }}</span>
-    </div>
-    <form [formGroup]="profileForm">
-      <label for="name">
-        Aktualisierung Ihres Namens:
-        <input type="text" formControlname="profileName" />
-      </label>
-      <label for="email">
-        Aktialisierung Ihrer Email:
-        <input type="email" formControlname="profileEmail" />
-      </label>
-    </form>
   </mat-card>
   <mat-card>
-    <mat-form-field>
-      <mat-label>Filter</mat-label>
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Feld Name eingeben"
-        #input
-      />
-    </mat-form-field>
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource" matSort>
+    <mat-tab-group>
+      <mat-tab label="Momentane Daten">
+        <ng-template matTabContent>
+          <div>
+            <h1 style="margin-left: 30px; margin-top: 50px">
+              <strong>Eingetragener Name: </strong>
+              <small class="text-muted">{{ user.data.name }}</small>
+            </h1>
+          </div>
+          <div>
+            <h1 style="margin-left: 30px; margin-top: 50px">
+              <strong>Eingetragene E-mail Adresse: </strong>
+              <small class="text-muted">{{ user.data.email }}</small>
+            </h1>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Beregnungspläne">
+        <ng-template matTabContent>
+         <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
         <!-- name Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Feldname</th>
@@ -59,25 +57,78 @@
           </td>
         </tr>
       </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-    </div>
-    <div>
-      <!-- spacing from table -->
-    </div>
-    <div></div>
-    <form [formGroup]="fieldTemplate" (ngSubmit)="addField(user)">
-      <label
-        >Fügen Sie hier ein neues Feld hinzu:<br />
-        Geben Sie hier den Namen des neuen Feldes ein.
-        <input type="text" formControlName="fieldName" />
-      </label>
-      <label>
-        und hier die Beregnungsdauer in h:
-        <input type="number" formControlName="fieldDuration" />
-      </label>
-      <button id="submitButton" mat-raised-button color="accent" type="submit">
-        Add Field
-      </button>
-    </form>
+          </div>
+          <mat-card>
+            <form [formGroup]="fieldTemplate" (ngSubmit)="addField(user)">
+              <label
+                >Fügen Sie hier ein neues Feld hinzu:<br />
+                Geben Sie hier den Namen des neuen Feldes ein.
+                <input type="text" formControlName="fieldName" />
+              </label>
+              <label>
+                und hier die Beregnungsdauer in h:
+                <input type="number" formControlName="fieldDuration" />
+              </label>
+              <button
+                id="submitButton"
+                mat-raised-button
+                color="accent"
+                type="submit"
+              >
+                Add Field
+              </button>
+            </form>
+          </mat-card>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Änderung von BenutzerDaten" style="height: 500px">
+        <ng-template matTabContent>
+          <form [formGroup]="profileForm" (ngSubmit)="updateUserData(user)">
+            <div>
+              <h1 style="margin-left: 30px; margin-top: 50px">
+                <strong>Eingetragener Name: </strong>
+                <small class="text-muted">{{ user.data.name }}</small>
+              </h1>
+            </div>
+            <div>
+              <h1 style="margin-left: 30px; margin-top: 50px">
+                <strong>Eingetragene E-mail Adresse: </strong>
+                <small class="text-muted">{{ user.data.email }}</small>
+              </h1>
+            </div>
+            <div>
+              <label for="name">
+                <h1 style="margin-left: 30px; margin-top: 50px">
+                  <strong>Aktualisierung Ihres Namens: </strong>
+                  <input type="text" formControlname="profileName" />
+                </h1>
+              </label>
+            </div>
+            <div>
+              <label for="email">
+                <h1 style="margin-left: 30px; margin-top: 50px">
+                  <strong>Aktualisierung Ihrer E-mail Adresse: </strong>
+                  <input type="email" formControlname="profileEmail" />
+                </h1>
+              </label>
+            </div>
+            <button
+              id="submitProfileButton"
+              mat-raised-button
+              color="accent"
+              type="submit"
+              style="
+                margin-left: 80px;
+                margin-top: 33px;
+                height: 100%;
+                display: block;
+              "
+            >
+              Änderung Speichern
+            </button>
+          </form>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
   </mat-card>
 </ng-container>
