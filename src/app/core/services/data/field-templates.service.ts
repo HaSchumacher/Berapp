@@ -51,18 +51,14 @@ export class FieldTemplatesService {
       throw new Error('Given Arguments must not be nullable!');
 
     this.firestore.firestore.runTransaction(async (ref) => {
-      //**set Template and get id?
-      const newdoc = this.firestore.collection(this.FIELDTEMPLATES).doc();
-      const userref = this.firestore
-        .collection(this.userService.USERS_COLLECTION)
-        .doc(of.data.id).ref;
-      /**update user object fields array
-       * update only partianal
-       */
-      userref.update({
-        fields: firebase.default.firestore.FieldValue.arrayUnion(newdoc.ref.id),
-      });
-      ref.set(newdoc.ref, template);
+    const newdoc = this.firestore.collection(this.FIELDTEMPLATES).doc();
+    const userref = this.firestore
+      .collection(this.userService.USERS_COLLECTION)
+      .doc(of.data.id).ref;
+    userref.update({
+      fields: firebase.default.firestore.FieldValue.arrayUnion(newdoc.ref.id),
+    });
+    ref.set(newdoc.ref, template);
     });
   }
 }

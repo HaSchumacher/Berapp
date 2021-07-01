@@ -30,12 +30,14 @@
         </ng-template>
       </mat-tab>
       <mat-tab label="Beregnungspläne">
+       
         <ng-template matTabContent>
           <mat-form-field>
             <mat-label>Filter</mat-label>
               <input matInput (keyup)="applyFilter($event)" placeholder="Feld Name eingeben" #input>
           </mat-form-field>
          <div class="mat-elevation-z8">
+         
             <table mat-table [dataSource]="dataSource" matSort>
         <!-- name Column -->
         <ng-container matColumnDef="name">
@@ -78,6 +80,7 @@
             </form>
           </mat-card>
         </ng-template>
+     
       </mat-tab>
       <mat-tab label="Änderung von BenutzerDaten" style="height: 500px">
         <ng-template matTabContent>

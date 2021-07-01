@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatTab, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { StoreService } from '@core';
@@ -9,7 +9,7 @@ import { FieldTemplatesService } from '@core/services/data/field-templates.servi
 import { User } from '@model';
 import { FieldTemplate } from '@model/fieldTemplate';
 import { isNonNull } from '@utilities';
-import { Observable } from 'rxjs';
+import { Observable, of, Subscription, } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -17,11 +17,12 @@ import { filter, switchMap } from 'rxjs/operators';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit{
 
-  public fields: Observable<FieldTemplate[]>;
+export class OverviewComponent implements OnInit, OnDestroy{
+  public fields: FieldTemplate[];
   public displayedColumns: String[] = ['name','irrigationDuration'];
   public dataSource: MatTableDataSource<FieldTemplate>
+  private mySubscryption: Subscription;
   @ViewChild(MatTab) tab: MatTabsModule;
   @ViewChild(MatSort) sort: MatSort;
   
@@ -35,19 +36,30 @@ export class OverviewComponent implements OnInit{
     fieldDuration: new FormControl(''),
   })
   
-  constructor(public readonly store:StoreService, public readonly fieldTemplateService: FieldTemplatesService, public route:ActivatedRoute) { 
+  constructor(public readonly store:StoreService, public readonly fieldTemplateService: FieldTemplatesService, public route:ActivatedRoute ) { 
+    this.fields = new Array<FieldTemplate>();
 
+  }
+  ngOnDestroy(): void {
+    this.mySubscryption.unsubscribe();
   }
     
    ngOnInit(): void {
     this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
-    this.store.user$.pipe(
+    this.getFieldsfromUser();
+    
+  }
+  getFieldsfromUser() : void {
+    this.mySubscryption = this.store.user$.pipe(
       filter(user => isNonNull(user)),
       switchMap((user)=> this.fieldTemplateService.getFields(user))
-      ).subscribe((fieldTemplates: FieldTemplate[])=> this.dataSource = new MatTableDataSource<FieldTemplate>(fieldTemplates))
-      
+      ).subscribe((fieldTemplates: FieldTemplate[])=> {        
+          this.fields = fieldTemplates;
+          this.dataSource = new MatTableDataSource<FieldTemplate>(fieldTemplates);
+      })
   }
+
   applyFilter() {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
